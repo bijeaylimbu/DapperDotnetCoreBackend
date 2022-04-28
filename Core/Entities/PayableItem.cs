@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TaxSlabCalculator.Core.Entities;
 
 public class PayableItem

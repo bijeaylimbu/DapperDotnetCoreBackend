@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TaxSlabCalculator.Application.Interfaces;
 using TaxSlabCalculator.Application.Requests;
-using TaxSlabCalculator.Application.Responses;
 
 namespace TaxSlabCalculator.Controllers;
 [Route("api")]
@@ -15,8 +14,8 @@ public class PersonController: ControllerBase
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    [HttpPost("/createPerson")]
-    public async Task<IActionResult> CreatePerson([FromBody]CreatePersonRequest createPerson)
+    [HttpPost("createPerson")]
+    public async Task<IActionResult> CreatePerson(CreatePersonRequest createPerson)
     {
         try
         {
@@ -56,13 +55,26 @@ public class PersonController: ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
-    [HttpGet("/allDeductingItem")]
-    public async Task<IActionResult> GetAllDeductingItem()
+    [HttpGet("allPersonName")]
+    public async Task<IActionResult> GetAllPersonName()
     {
         try
         {
-            var deductingItem = await _repository.GetAllDeductionItem();
+            var personName = await _repository.GetAllPersonName();
+            return Ok(personName);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    [HttpGet("allDeductingItem/{id}")]
+    public async Task<IActionResult> GetAllDeductingItem(int id)
+    {
+        try
+        {
+            var deductingItem = await _repository.GetAllDeductionItem(id);
             return Ok(deductingItem);
         }
         catch (Exception e)
@@ -70,12 +82,12 @@ public class PersonController: ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-    [HttpGet("allPayableItem")]
-    public async Task<IActionResult> GetAllPayableItem()
+    [HttpGet("allPayableItem/{id}")]
+    public async Task<IActionResult> GetAllPayableItem(int id)
     {
         try
         {
-            var payableItem = await _repository.GetAllPayableItem();
+            var payableItem = await _repository.GetAllPayableItem(id);
             return Ok(payableItem);
         }
         catch (Exception e)
@@ -84,7 +96,7 @@ public class PersonController: ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("getPayableIteemById/{id}")]
     public async Task<IActionResult> GetPayableItemById(int id)
     {
         try
@@ -98,7 +110,7 @@ public class PersonController: ControllerBase
         }
     }
 
-    [HttpPut("/updatePayableItemById/{id}")]
+    [HttpPut("updatePayableItemById/{id}")]
     public async Task<IActionResult> UpdatePayableItem(UpdatePayableItemRequest request, int id)
     {
         try
@@ -114,7 +126,7 @@ public class PersonController: ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-    [HttpPut("/updateDeductingItemById/{id}")]
+    [HttpPut("updateDeductingItemById/{id}")]
     public async Task<IActionResult> UpdateDeductingItem(UpdateDeductingItemRequest request, int id)
     {
         try
@@ -163,4 +175,5 @@ public class PersonController: ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+ 
 }

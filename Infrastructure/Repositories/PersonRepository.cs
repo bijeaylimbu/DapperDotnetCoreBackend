@@ -2,6 +2,7 @@
 using Dapper;
 using TaxSlabCalculator.Application.Interfaces;
 using TaxSlabCalculator.Application.Requests;
+using TaxSlabCalculator.Application.Responses;
 using TaxSlabCalculator.Core.Entities;
 using TaxSlabCalculator.Infrastructure.Persistance;
 
@@ -54,23 +55,30 @@ public class PersonRepository: IPersonRepository
           return result;
         }
     }
-
-    public async Task< IEnumerable<PayableItem>> GetAllPayableItem()
+    public async Task<IReadOnlyList<Person>> GetAllPersonName()
     {
-        var query = "SELECT item_name, amount FROM payable_item";
+        var query = "SELECT name, id FROM person";
         using (var connection = _context.CreateConnection())
         {
-            var payableItem = await connection.QueryAsync<PayableItem>(query);
+            var personName = await connection.QueryAsync<Person>(query);
+            return personName.ToList();
+        }
+    }
+    public async Task<IReadOnlyList<object>> GetAllPayableItem(int id)
+    {
+        var query = "SELECT id, Item_name, amount, person_id FROM payable_item WHERE person_id= @Id";
+        using (var connection = _context.CreateConnection())
+        {
+            var payableItem =await connection.QueryAsync<object>(query, new {id});
             return payableItem.ToList();
         }
     }
-
-    public async Task<IEnumerable<DeductingItem>> GetAllDeductionItem()
+    public async Task<IReadOnlyList<object>> GetAllDeductionItem(int id)
     {
-        var query = "SELECT item_name, amount FROM deducting_item";
+        var query = "SELECT id, item_name, amount, person_id FROM deducting_item  WHERE person_id= @Id";
         using (var connection = _context.CreateConnection())
         {
-            var deductingItem = await connection.QueryAsync<DeductingItem>(query);
+            var deductingItem = await connection.QueryAsync<object>(query,new {id});
             return deductingItem.ToList();
         }
     }
