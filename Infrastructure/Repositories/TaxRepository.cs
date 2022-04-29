@@ -8,11 +8,11 @@ using TaxSlabCalculator.Infrastructure.Persistance;
 
 namespace TaxSlabCalculator.Infrastructure.Repositories;
 
-public class PersonRepository: IPersonRepository
+public class TaxRepository: IPersonRepository
 {
     private readonly TaxSlabDbContext _context;
 
-    public PersonRepository(TaxSlabDbContext context)
+    public TaxRepository(TaxSlabDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }

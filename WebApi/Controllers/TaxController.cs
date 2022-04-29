@@ -5,11 +5,11 @@ using TaxSlabCalculator.Application.Requests;
 namespace TaxSlabCalculator.Controllers;
 [Route("api")]
 [ApiController]
-public class PersonController: ControllerBase
+public class TaxController: ControllerBase
 {
     private readonly IPersonRepository _repository;
 
-    public PersonController(IPersonRepository repository)
+    public TaxController(IPersonRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
