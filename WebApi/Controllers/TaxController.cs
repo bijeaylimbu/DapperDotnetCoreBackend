@@ -7,9 +7,9 @@ namespace TaxSlabCalculator.Controllers;
 [ApiController]
 public class TaxController: ControllerBase
 {
-    private readonly IPersonRepository _repository;
+    private readonly ITaxRepository _repository;
 
-    public TaxController(IPersonRepository repository)
+    public TaxController(ITaxRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }

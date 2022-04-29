@@ -3,6 +3,6 @@ using TaxSlabCalculator.Core.Entities;
 
 namespace TaxSlabCalculator.Application.Interfaces;
 
-public interface IPersonRepository: IGenericRespository
+public interface ITaxRepository: IGenericRespository
 {
 }

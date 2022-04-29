@@ -8,7 +8,7 @@ using TaxSlabCalculator.Infrastructure.Persistance;
 
 namespace TaxSlabCalculator.Infrastructure.Repositories;
 
-public class TaxRepository: IPersonRepository
+public class TaxRepository: ITaxRepository
 {
     private readonly TaxSlabDbContext _context;
 
@@ -66,7 +66,7 @@ public class TaxRepository: IPersonRepository
     }
     public async Task<IReadOnlyList<object>> GetAllPayableItem(int id)
     {
-        var query = "SELECT id, Item_name, amount, person_id FROM payable_item WHERE person_id= @Id";
+        var query = "SELECT id, Item_name, amount, person_id FROM payable_item WHERE person_id= @Id ORDER BY id asc";
         using (var connection = _context.CreateConnection())
         {
             var payableItem =await connection.QueryAsync<object>(query, new {id});
@@ -75,7 +75,7 @@ public class TaxRepository: IPersonRepository
     }
     public async Task<IReadOnlyList<object>> GetAllDeductionItem(int id)
     {
-        var query = "SELECT id, item_name, amount, person_id FROM deducting_item  WHERE person_id= @Id";
+        var query = "SELECT id, item_name, amount, person_id FROM deducting_item  WHERE person_id= @Id ORDER BY id asc";
         using (var connection = _context.CreateConnection())
         {
             var deductingItem = await connection.QueryAsync<object>(query,new {id});
@@ -95,7 +95,7 @@ public class TaxRepository: IPersonRepository
 
     public async Task<DeductingItem> GetDeductingItemById(int id)
     {
-        var query = "SELECT * FROM deducting_item WHERE id=@id";
+        var query = "SELECT * FROM deducting_item WHERE id=@id ";
         using (var connection = _context.CreateConnection())
         {
             var deductingItem = await connection.QueryFirstOrDefaultAsync<DeductingItem>(query, new {id});
@@ -118,7 +118,7 @@ public class TaxRepository: IPersonRepository
 
     public async Task UpdateDeductionItem(UpdateDeductingItemRequest request, int id)
     {
-        var query = "UPDATE deducting_item SET item_name = @ItemName, amount = @Amount WHERE id= @Id ";
+        var query = "UPDATE deducting_item SET item_name = @ItemName, amount = @Amount WHERE id= @Id";
         var parameters = new DynamicParameters();
         parameters.Add("ItemName", request.ItemName);
         parameters.Add("Amount", request.Amount);

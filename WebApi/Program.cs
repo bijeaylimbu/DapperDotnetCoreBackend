@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<TaxSlabDbContext>();
-builder.Services.AddScoped<IPersonRepository, TaxRepository>();
+builder.Services.AddScoped<ITaxRepository, TaxRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
